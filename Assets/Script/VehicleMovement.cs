@@ -10,35 +10,69 @@ namespace AlexzanderCowell
 
     public class VehicleMovement : MonoBehaviour
     {
-        [SerializeField] float vehicleForwardSpeed = 0.5f;
-        [SerializeField] float vehicleReverseSpeed = 0.3f;
+        [SerializeField] float vehicleForwardSpeed;
+        [SerializeField] float vehicleReverseSpeed;
+        [SerializeField] float maxForwardSpeed = 5f;
+        [SerializeField] float maxReverseSpeed = -3f;
         [SerializeField] float vehicleTurnSpeed = 0.1f;
         [SerializeField] Transform vehicleToMove;
         [SerializeField] private float yaw = 0.0f;
         [SerializeField] private float pitch = 0.0f;
-
+        [SerializeField] float gravityMultipler;
+        [SerializeField] private Material inTangleble; // Material to turn objects invisble.
+        [SerializeField] private Material tangleble; // Material to turn objects into wooden blocks.
         private Rigidbody ridgeBody;
-       
+        private bool hiddenPlayer;
+        
 
-       
-       private void Update()
+        private void Start()
+        {
+            ridgeBody = GetComponent<Rigidbody>();
+        }
+
+        private void Update()
        {
 
             float moveMousex = +vehicleTurnSpeed * Input.GetAxis("Mouse X");
             float moveMousey = vehicleTurnSpeed * Input.GetAxis("Mouse X");
             yaw += vehicleTurnSpeed * Input.GetAxis("Mouse X");
             pitch -= vehicleTurnSpeed * Input.GetAxis("Mouse Y");
+            transform.Translate(0, 0, vehicleForwardSpeed * Time.deltaTime, Space.Self);
+            transform.Translate(0, 0, vehicleReverseSpeed * Time.deltaTime, Space.Self);
             
+            
+            ridgeBody.AddForce((Vector3.down * gravityMultipler), ForceMode.Acceleration);
 
+            
 
             if (Input.GetKey(KeyCode.W))
             {
-                transform.position += Vector3.forward * vehicleForwardSpeed;
+                vehicleForwardSpeed += 0.1f;
+            }
+
+            if (vehicleForwardSpeed >= maxForwardSpeed)
+            {
+                vehicleForwardSpeed = maxForwardSpeed;
+            }
+
+            if (Input.GetKeyUp(KeyCode.W))
+            {
+                vehicleForwardSpeed = 0;
             }
 
             if (Input.GetKey(KeyCode.S))
             {
-                transform.position += Vector3.back * vehicleReverseSpeed;
+                vehicleReverseSpeed -= (0.1f);
+            }
+
+            if (vehicleReverseSpeed <= maxReverseSpeed)
+            {
+                vehicleReverseSpeed = maxReverseSpeed;
+            }
+
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                vehicleReverseSpeed = 0;
             }
 
             if (Input.GetKey(KeyCode.A))
@@ -55,9 +89,29 @@ namespace AlexzanderCowell
 
 
 
-       }
-        
+        }
 
-        
+        private void OnTriggerEnter(Collider other) // Checks for anything entering into the trigger zone.
+        {
+            if (other.CompareTag("Bush")) // If anything with the "Player" tag comes into the trigger zone it will activate the code below.
+            {
+                GetComponent<MeshRenderer>().material = tangleble;
+                hiddenPlayer = true;
+            }
+
+        }
+
+        private void OnTriggerExit(Collider other) // Checks for anything exiting out of the trigger zone.
+        {
+            if (other.CompareTag("Bush")) // If anything with the "Player" tag comes out of the trigger zone it will activate the code below.
+            {
+                GetComponent<MeshRenderer>().material = inTangleble;
+                hiddenPlayer = false;
+            }
+        }
+
+
+
+
     }
 }
