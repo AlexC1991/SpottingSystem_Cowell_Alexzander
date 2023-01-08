@@ -317,7 +317,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 54
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -342,14 +342,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 247644305}
-  m_LocalRotation: {x: 0.14915602, y: -0, z: -0, w: 0.9888137}
-  m_LocalPosition: {x: 524.73, y: 20.95, z: 149.53}
+  m_LocalRotation: {x: 0.23227488, y: -0, z: -0, w: 0.97265023}
+  m_LocalPosition: {x: 524.73, y: 23.11, z: 150.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 17.156, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 26.862, y: 0, z: 0}
 --- !u!1 &255683008
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,6 +943,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 330585543}
   freeRoamCamera: {fileID: 247644305}
+  horizontalSpeed: 2
+  verticalSpeed: 2
 --- !u!4 &961488466
 Transform:
   m_ObjectHideFlags: 0
@@ -1438,8 +1440,6 @@ MonoBehaviour:
   maxReverseSpeed: -3
   vehicleTurnSpeed: 0.1
   vehicleToMove: {fileID: 0}
-  yaw: 0
-  pitch: 0
   gravityMultipler: 5
   inTangleble: {fileID: 2100000, guid: 31c04007697460e429a5111cca2a0405, type: 2}
   tangleble: {fileID: 2100000, guid: d667e695b9b653b44b12b0254e5c0d14, type: 2}

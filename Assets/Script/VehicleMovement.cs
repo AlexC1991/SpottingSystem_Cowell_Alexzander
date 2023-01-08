@@ -16,79 +16,25 @@ namespace AlexzanderCowell
         [SerializeField] float maxReverseSpeed = -3f;
         [SerializeField] float vehicleTurnSpeed = 0.1f;
         [SerializeField] Transform vehicleToMove;
-        [SerializeField] private float yaw = 0.0f;
-        [SerializeField] private float pitch = 0.0f;
+        private float yaw = 0.0f;
+        private float pitch = 0.0f;
         [SerializeField] float gravityMultipler;
         [SerializeField] private Material inTangleble; // Material to turn objects invisble.
         [SerializeField] private Material tangleble; // Material to turn objects into wooden blocks.
         private Rigidbody ridgeBody;
         private bool hiddenPlayer;
         
+        
 
         private void Start()
         {
             ridgeBody = GetComponent<Rigidbody>();
+            
         }
 
         private void Update()
        {
-
-            float moveMousex = +vehicleTurnSpeed * Input.GetAxis("Mouse X");
-            float moveMousey = vehicleTurnSpeed * Input.GetAxis("Mouse X");
-            yaw += vehicleTurnSpeed * Input.GetAxis("Mouse X");
-            pitch -= vehicleTurnSpeed * Input.GetAxis("Mouse Y");
-            transform.Translate(0, 0, vehicleForwardSpeed * Time.deltaTime, Space.Self);
-            transform.Translate(0, 0, vehicleReverseSpeed * Time.deltaTime, Space.Self);
             
-            
-            ridgeBody.AddForce((Vector3.down * gravityMultipler), ForceMode.Acceleration);
-
-            
-
-            if (Input.GetKey(KeyCode.W))
-            {
-                vehicleForwardSpeed += 0.1f;
-            }
-
-            if (vehicleForwardSpeed >= maxForwardSpeed)
-            {
-                vehicleForwardSpeed = maxForwardSpeed;
-            }
-
-            if (Input.GetKeyUp(KeyCode.W))
-            {
-                vehicleForwardSpeed = 0;
-            }
-
-            if (Input.GetKey(KeyCode.S))
-            {
-                vehicleReverseSpeed -= (0.1f);
-            }
-
-            if (vehicleReverseSpeed <= maxReverseSpeed)
-            {
-                vehicleReverseSpeed = maxReverseSpeed;
-            }
-
-            if (Input.GetKeyUp(KeyCode.S))
-            {
-                vehicleReverseSpeed = 0;
-            }
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.Rotate(0f, -vehicleTurnSpeed, 0f, Space.Self);
-
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                
-                transform.Rotate(0f, +vehicleTurnSpeed, 0f, Space.Self);
-            }
-
-
-
         }
 
         private void OnTriggerEnter(Collider other) // Checks for anything entering into the trigger zone.
@@ -108,6 +54,76 @@ namespace AlexzanderCowell
                 GetComponent<MeshRenderer>().material = inTangleble;
                 hiddenPlayer = false;
             }
+        }
+
+        private void OnEnable()
+        {
+            FreeRoamCamera._UsingFreeRoamCameraInstead += Controls;
+        }
+
+        private void OnDisable()
+        {
+            FreeRoamCamera._UsingFreeRoamCameraInstead -= Controls;
+        }
+
+            void Controls(bool switchControls)
+        {
+            float moveMousex = +vehicleTurnSpeed * Input.GetAxis("Mouse X");
+            float moveMousey = vehicleTurnSpeed * Input.GetAxis("Mouse X");
+            yaw += vehicleTurnSpeed * Input.GetAxis("Mouse X");
+            pitch -= vehicleTurnSpeed * Input.GetAxis("Mouse Y");
+            transform.Translate(0, 0, vehicleForwardSpeed * Time.deltaTime, Space.Self);
+            transform.Translate(0, 0, vehicleReverseSpeed * Time.deltaTime, Space.Self);
+
+
+            ridgeBody.AddForce((Vector3.down * gravityMultipler), ForceMode.Acceleration);
+
+            if (switchControls == false)
+            {
+                if (Input.GetKey(KeyCode.W))
+                {
+                    vehicleForwardSpeed += 0.1f;
+                }
+
+                if (vehicleForwardSpeed >= maxForwardSpeed)
+                {
+                    vehicleForwardSpeed = maxForwardSpeed;
+                }
+
+                if (Input.GetKeyUp(KeyCode.W))
+                {
+                    vehicleForwardSpeed = 0;
+                }
+
+                if (Input.GetKey(KeyCode.S))
+                {
+                    vehicleReverseSpeed -= (0.1f);
+                }
+
+                if (vehicleReverseSpeed <= maxReverseSpeed)
+                {
+                    vehicleReverseSpeed = maxReverseSpeed;
+                }
+
+                if (Input.GetKeyUp(KeyCode.S))
+                {
+                    vehicleReverseSpeed = 0;
+                }
+
+                if (Input.GetKey(KeyCode.A))
+                {
+                    transform.Rotate(0f, -vehicleTurnSpeed, 0f, Space.Self);
+
+                }
+
+                if (Input.GetKey(KeyCode.D))
+                {
+
+                    transform.Rotate(0f, +vehicleTurnSpeed, 0f, Space.Self);
+                }
+            }
+
+            
         }
 
 
